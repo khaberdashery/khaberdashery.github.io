@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Karey Okeの小間物</title>
+    <link>https://khaberdashery.github.io/jp/</link>
+    <description>Recent content on Karey Okeの小間物</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Mar 2019 23:13:12 +0300</lastBuildDate>
+    
+	<atom:link href="https://khaberdashery.github.io/jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ローカル版のEthereumを実行する</title>
+      <link>https://khaberdashery.github.io/jp/local-ethereum/</link>
+      <pubDate>Sun, 03 Mar 2019 23:13:12 +0300</pubDate>
+      
+      <guid>https://khaberdashery.github.io/jp/local-ethereum/</guid>
+      <description>&lt;p&gt;この記事では、慣れ親しんだ、そして技術のより詳細な研究のために、Ethereumネットワークのローカルバージョンの立ち上げを見ていきます。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

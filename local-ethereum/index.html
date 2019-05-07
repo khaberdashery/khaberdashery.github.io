@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html><head>
+    <title>Запуск локальной версии Ethereum &middot; Karey Oke&#39;s Haberdashery</title>
+    <link rel="canonical" href="https://khaberdashery.github.io/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="">
+    <link rel="stylesheet" type="text/css" href="https://khaberdashery.github.io/css/main.css"/>
+</head>
+<body><header id="site-header">
+    <ul class="languages">
+        
+        <li class="language"><a href="https://khaberdashery.github.io/">en</a></li>
+        
+        <li class="language"><a href="https://khaberdashery.github.io/ru/">русский</a></li>
+        
+        <li class="language"><a href="https://khaberdashery.github.io/jp/">日本語</a></li>
+        
+    </ul>
+    <div class="container">
+        <a href="https://khaberdashery.github.io/" alt="Karey Oke&#39;s Haberdashery"><h1 class="blog-title heading">Karey Oke&#39;s Haberdashery</h1></a>
+        <p class="blog-description"></p>
+    </div>
+</header><main class="content" role="main">
+            <div class="container">
+                <article class="page">
+    <header class="post-header">
+        <p class="post-time"><time datetime="2019-03-03T23:13:12&#43;03:00">March 3, 2019</time></p>
+        <h3 class="p-post-title">Запуск локальной версии Ethereum</h3>
+    </header>
+
+    <section class="post-content">
+        <p>В этой статье мы рассмотрим запуск локальной версии сети Ethereum для ознакомления и более подробного изучения технологии.</p>
+
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="font-style:italic">&#34;context&#34;</span>
+	<span style="font-style:italic">&#34;flag&#34;</span>
+	<span style="font-style:italic">&#34;log&#34;</span>
+	<span style="font-style:italic">&#34;os&#34;</span>
+	<span style="font-style:italic">&#34;os/signal&#34;</span>
+	<span style="font-style:italic">&#34;strings&#34;</span>
+	<span style="font-style:italic">&#34;syscall&#34;</span>
+
+	<span style="font-style:italic">&#34;github.com/Shopify/sarama&#34;</span>
+)
+
+<span style="font-style:italic">// Sarma configuration options
+</span><span style="font-style:italic"></span><span style="font-weight:bold">var</span> (
+	brokers = <span style="font-style:italic">&#34;&#34;</span>
+	version = <span style="font-style:italic">&#34;&#34;</span>
+	group   = <span style="font-style:italic">&#34;&#34;</span>
+	topics  = <span style="font-style:italic">&#34;&#34;</span>
+	oldest  = <span style="font-weight:bold">true</span>
+	verbose = <span style="font-weight:bold">false</span>
+)
+
+<span style="font-weight:bold">func</span> init() {
+	flag.StringVar(&amp;brokers, <span style="font-style:italic">&#34;brokers&#34;</span>, <span style="font-style:italic">&#34;&#34;</span>, <span style="font-style:italic">&#34;Kafka bootstrap brokers to connect to, as a comma separated list&#34;</span>)
+	flag.StringVar(&amp;group, <span style="font-style:italic">&#34;group&#34;</span>, <span style="font-style:italic">&#34;&#34;</span>, <span style="font-style:italic">&#34;Kafka consumer group definition&#34;</span>)
+	flag.StringVar(&amp;version, <span style="font-style:italic">&#34;version&#34;</span>, <span style="font-style:italic">&#34;2.1.1&#34;</span>, <span style="font-style:italic">&#34;Kafka cluster version&#34;</span>)
+	flag.StringVar(&amp;topics, <span style="font-style:italic">&#34;topics&#34;</span>, <span style="font-style:italic">&#34;&#34;</span>, <span style="font-style:italic">&#34;Kafka topics to be consumed, as a comma seperated list&#34;</span>)
+	flag.BoolVar(&amp;oldest, <span style="font-style:italic">&#34;oldest&#34;</span>, <span style="font-weight:bold">true</span>, <span style="font-style:italic">&#34;Kafka consumer consume initial ofset from oldest&#34;</span>)
+	flag.BoolVar(&amp;verbose, <span style="font-style:italic">&#34;verbose&#34;</span>, <span style="font-weight:bold">false</span>, <span style="font-style:italic">&#34;Sarama logging&#34;</span>)
+	flag.Parse()
+
+	<span style="font-weight:bold">if</span> len(brokers) == 0 {
+		panic(<span style="font-style:italic">&#34;no Kafka bootstrap brokers defined, please set the -brokers flag&#34;</span>)
+	}
+
+	<span style="font-weight:bold">if</span> len(topics) == 0 {
+		panic(<span style="font-style:italic">&#34;no topics given to be consumed, please set the -topics flag&#34;</span>)
+	}
+
+	<span style="font-weight:bold">if</span> len(group) == 0 {
+		panic(<span style="font-style:italic">&#34;no Kafka consumer group defined, please set the -group flag&#34;</span>)
+	}
+}
+
+<span style="font-weight:bold">func</span> main() {
+	log.Println(<span style="font-style:italic">&#34;Starting a new Sarama consumer&#34;</span>)
+
+	<span style="font-weight:bold">if</span> verbose {
+		sarama.Logger = log.New(os.Stdout, <span style="font-style:italic">&#34;[sarama] &#34;</span>, log.LstdFlags)
+	}
+
+	version, err := sarama.ParseKafkaVersion(version)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		panic(err)
+	}
+
+	<span style="font-style:italic">/**
+</span><span style="font-style:italic">	 * Construct a new Sarama configuration.
+</span><span style="font-style:italic">	 * The Kafka cluster version has to be defined before the consumer/producer is initialized.
+</span><span style="font-style:italic">	 */</span>
+	config := sarama.NewConfig()
+	config.Version = version
+
+	<span style="font-weight:bold">if</span> oldest {
+		config.Consumer.Offsets.Initial = sarama.OffsetOldest
+	}
+
+	<span style="font-style:italic">/**
+</span><span style="font-style:italic">	 * Setup a new Sarama consumer group
+</span><span style="font-style:italic">	 */</span>
+	consumer := Consumer{}
+
+	ctx := context.Background()
+	client, err := sarama.NewConsumerGroup(strings.Split(brokers, <span style="font-style:italic">&#34;,&#34;</span>), group, config)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		panic(err)
+	}
+
+	<span style="font-weight:bold">go</span> <span style="font-weight:bold">func</span>() {
+		<span style="font-weight:bold">for</span> {
+			consumer.ready = make(<span style="font-weight:bold">chan</span> <span style="">bool</span>, 0)
+			err := client.Consume(ctx, strings.Split(topics, <span style="font-style:italic">&#34;,&#34;</span>), &amp;consumer)
+			<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+				panic(err)
+			}
+		}
+	}()
+
+	&lt;-consumer.ready <span style="font-style:italic">// Await till the consumer has been set up
+</span><span style="font-style:italic"></span>	log.Println(<span style="font-style:italic">&#34;Sarama consumer up and running!...&#34;</span>)
+
+	sigterm := make(<span style="font-weight:bold">chan</span> os.Signal, 1)
+	signal.Notify(sigterm, syscall.SIGINT, syscall.SIGTERM)
+
+	&lt;-sigterm <span style="font-style:italic">// Await a sigterm signal before safely closing the consumer
+</span><span style="font-style:italic"></span>
+	err = client.Close()
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		panic(err)
+	}
+}
+
+<span style="font-style:italic">// Consumer represents a Sarama consumer group consumer
+</span><span style="font-style:italic"></span><span style="font-weight:bold">type</span> Consumer <span style="font-weight:bold">struct</span> {
+	ready <span style="font-weight:bold">chan</span> <span style="">bool</span>
+}
+
+<span style="font-style:italic">// Setup is run at the beginning of a new session, before ConsumeClaim
+</span><span style="font-style:italic"></span><span style="font-weight:bold">func</span> (consumer *Consumer) Setup(sarama.ConsumerGroupSession) <span style="">error</span> {
+	<span style="font-style:italic">// Mark the consumer as ready
+</span><span style="font-style:italic"></span>	close(consumer.ready)
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}
+
+<span style="font-style:italic">// Cleanup is run at the end of a session, once all ConsumeClaim goroutines have exited
+</span><span style="font-style:italic"></span><span style="font-weight:bold">func</span> (consumer *Consumer) Cleanup(sarama.ConsumerGroupSession) <span style="">error</span> {
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}
+
+<span style="font-style:italic">// ConsumeClaim must start a consumer loop of ConsumerGroupClaim&#39;s Messages().
+</span><span style="font-style:italic"></span><span style="font-weight:bold">func</span> (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) <span style="">error</span> {
+
+	<span style="font-style:italic">// NOTE:
+</span><span style="font-style:italic"></span>	<span style="font-style:italic">// Do not move the code below to a goroutine.
+</span><span style="font-style:italic"></span>	<span style="font-style:italic">// The `ConsumeClaim` itself is called within a goroutine, see:
+</span><span style="font-style:italic"></span>	<span style="font-style:italic">// https://github.com/Shopify/sarama/blob/master/consumer_group.go#L27-L29
+</span><span style="font-style:italic"></span>	<span style="font-weight:bold">for</span> message := <span style="font-weight:bold">range</span> claim.Messages() {
+		log.Printf(<span style="font-style:italic">&#34;Message claimed: value = %s, timestamp = %v, topic = %s&#34;</span>, string(message.Value), message.Timestamp, message.Topic)
+		session.MarkMessage(message, <span style="font-style:italic">&#34;&#34;</span>)
+	}
+
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}</code></pre></div>
+    </section>
+
+    <footer class="post-footer">
+        <section class="f-1">
+            
+        </section>
+                        
+        <section class="f-2">
+            
+        </section>
+    </footer>
+</article>
+            </div>
+        </main></body>
+</html>

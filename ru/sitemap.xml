@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://khaberdashery.github.io/ru/categories/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://khaberdashery.github.io/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="jp"
+                href="https://khaberdashery.github.io/jp/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://khaberdashery.github.io/ru/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://khaberdashery.github.io/ru/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://khaberdashery.github.io/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="jp"
+                href="https://khaberdashery.github.io/jp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://khaberdashery.github.io/ru/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://khaberdashery.github.io/ru/tags/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://khaberdashery.github.io/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="jp"
+                href="https://khaberdashery.github.io/jp/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://khaberdashery.github.io/ru/tags/"
+                />
+  </url>
+  
+</urlset>
