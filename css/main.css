@@ -99,6 +99,87 @@ h6 {
 	text-rendering: optimizeLegibility
 }
 
+h1 {
+	margin-bottom: 0.495em;
+	font-size: 2.5em;
+}
+
+@media (max-width: 550px) {
+	h1 {
+		font-size: 50px
+	}
+}
+
+h2 {
+	font-size: 48px;
+	font-size: 2.6667rem;
+	margin-bottom: 0.61875em
+}
+
+@media (max-width: 550px) {
+	h2 {
+		font-size: 43px
+	}
+}
+
+h3 {
+	font-size: 36px;
+	font-size: 1.8rem;
+	margin-bottom: 0.825em
+}
+
+@media (max-width: 550px) {
+	h3 {
+		font-size: 28px
+	}
+}
+
+h4 {
+	font-size: 24px;
+	font-size: 1.3333333333333333rem;
+	margin-bottom: 1.2375em
+}
+
+@media (max-width: 550px) {
+	h4 {
+		font-size: 22px
+	}
+}
+
+h5 {
+	font-size: 21px;
+	font-size: 1.16667rem;
+	margin-bottom: 1.4142857142857141em
+}
+
+@media (max-width: 550px) {
+	h5 {
+		font-size: 19px
+	}
+}
+
+h6 {
+	font-size: 18px;
+	font-size: 1rem;
+	margin-bottom: 1.65em
+}
+
+@media (max-width: 550px) {
+	h6 {
+		font-size: 15px
+	}
+}
+
+@media (max-width: 550px) {
+	ul.languages {
+		font-size: 24px;
+	}
+}
+
+p {
+	margin: auto auto 1.5em
+}
+
 code {
 	font-size: 14px;
 	overflow: auto;
