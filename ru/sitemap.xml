@@ -3,6 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://khaberdashery.github.io/ru/local-ethereum/</loc>
+    <lastmod>2019-03-03T23:13:12+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://khaberdashery.github.io/local-ethereum/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="jp"
+                href="https://khaberdashery.github.io/jp/local-ethereum/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://khaberdashery.github.io/ru/local-ethereum/"
+                />
+  </url>
+  
+  <url>
     <loc>https://khaberdashery.github.io/ru/categories/</loc>
     <priority>0</priority>
     <xhtml:link
@@ -24,6 +44,7 @@
   
   <url>
     <loc>https://khaberdashery.github.io/ru/</loc>
+    <lastmod>2019-03-03T23:13:12+03:00</lastmod>
     <priority>0</priority>
     <xhtml:link
                 rel="alternate"

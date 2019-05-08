@@ -12,6 +12,11 @@
                 />
     <xhtml:link
                 rel="alternate"
+                hreflang="ru"
+                href="https://khaberdashery.github.io/ru/local-ethereum/"
+                />
+    <xhtml:link
+                rel="alternate"
                 hreflang="jp"
                 href="https://khaberdashery.github.io/jp/local-ethereum/"
                 />

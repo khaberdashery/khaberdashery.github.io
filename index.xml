@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Запуск локальной версии Ethereum</title>
+      <title>Running local Ethereum network</title>
       <link>https://khaberdashery.github.io/local-ethereum/</link>
       <pubDate>Sun, 03 Mar 2019 23:13:12 +0300</pubDate>
       
       <guid>https://khaberdashery.github.io/local-ethereum/</guid>
-      <description>&lt;p&gt;В этой статье мы рассмотрим запуск локальной версии сети Ethereum для ознакомления и более подробного изучения технологии.&lt;/p&gt;</description>
+      <description>&lt;p&gt;In this post we will try to run local version of Ethereum network&lt;/p&gt;</description>
     </item>
     
   </channel>
